@@ -1,3 +1,4 @@
+//暂时将iteratee全部都当函数处理
 (function() {
 
 	var root = this;
@@ -126,6 +127,53 @@
 		return results;
 	}
  
+ 	/*
+		*
+		_.reduce测试实例 
+		console.log(_.reduce([1, 2, 3], function(memo, num){ return memo - num; }));//-4
+		* 
+	*/
+ 	_.reduce = _.foldl = _.inject = function(obj, iteratee, memo, context) {
+ 		if(obj == null) return null;
+ 		iteratee = optimizeCb(iteratee, context, 4);
+ 		var keys = obj.length !== +obj.length && _.keys(obj);
+ 		var length = (keys || obj).length;
+ 		var index = 0;
+ 		var currentKey;
+ 		//无mome则使用对象第一个值
+ 		if(arguments.length < 3) {
+ 			memo = obj[keys ? keys[index++] : index++];
+ 		}
+ 		for(; index < length; index++) {
+ 			currentKey = keys ? keys[index] : index;
+ 			memo = iteratee(memo, obj[currentKey], currentKey, obj);
+ 		}
+ 		return memo;
+ 	}
+ 	/*
+		*
+		_.reduce测试实例 
+		console.log(_.reduceRight([1, 2, 3], function(memo, num){ return memo - num; }));//0
+		* 
+	*/
+ 	_.reduceRight = _foldr = function(obj, iteratee, memo, context) {
+ 		if(obj == null) return [];
+
+ 		iteratee = optimizeCb(iteratee, context, 4);
+ 		var currentKey;
+ 		var length = obj.length;
+		var keys = length !== +length && _.keys(obj);
+		var index = (keys || obj).length;
+		if(arguments.length < 3) {
+			memo = obj[keys ? keys[--index] : --index];
+		}
+		while(index-- > 0) {
+			currentKey = keys ? keys[index] : index;
+			memo = iteratee(memo, obj[currentKey], currentKey, obj);
+		}		
+		return memo;
+ 	}
+
  	_.identity = function(value) {
  		return value;
  	}

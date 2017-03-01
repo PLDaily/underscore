@@ -8,14 +8,14 @@
 	
 	<script type="text/javascript" src="test.js"></script>
 	<script type="text/javascript">
-	console.log(_.map({d: {a: 1},e: {b: 2},f:{c: 3}}, function(num) { return num}));
+	/*console.log(_.map({d: {a: 1},e: {b: 2},f:{c: 3}}, function(num) { return num}));
 	console.log(_.map([1, 2, 3], function(num) { return num + 1}));
 	console.log(_.map({a: 1, b: 2, c: 3}, function(num) { return num + 1}));
 	console.log(_.map([1, 2, 3]));
 	console.log(_.map({a: 1, b: 2, c: 3}));
 	console.log(_.map([1, 2, 3], [1, 2, 3]));
-	console.log(_.map({a: 1, b: 2, c: 3}, {a: 1, b: 2, c: 3}));
-
+	console.log(_.map({a: 1, b: 2, c: 3}, {a: 1, b: 2, c: 3}));*/
+	console.log(_.reduceRight([1, 2, 3], function(memo, num){ return memo - num; }))//-4
 	</script>
 </body>
 </html>
