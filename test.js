@@ -220,7 +220,7 @@
 
  	/*
 		*
-		_.filter测试实例 
+		_.every测试实例 
 		console.log(_.every([2, 4, 5], function(num) { return num % 2 == 0; }));//false
 		console.log(_.every([2, 4, 6], function(num) { return num % 2 == 0; }));//true
 		console.log(_.every({a: 2, b: 4, c: 5}, function(num){ return num % 2 == 0; }));//false
@@ -238,6 +238,27 @@
  			}
  		}
  		return true;
+ 	}
+
+ 	/*
+		*
+		_.some测试实例 
+		console.log(_.some([1, 3, 5], function(num) { return num % 2 == 0; }));//false
+		console.log(_.some([2, 4, 6], function(num) { return num % 2 == 0; }));//true
+		console.log(_.some({a: 1, b: 3, c: 5}, function(num){ return num % 2 == 0; }));//false
+		console.log(_.some({a: 2, b: 4, c: 6}, function(num){ return num % 2 == 0; }));//true
+	*/
+ 	_.some = _.any = function(obj, predicate, context) {
+ 		if(obj == null) return [];
+ 		var keys = obj.length !== +obj.length && _.keys(obj);
+ 		var length = (keys || obj).length;
+ 		var currentKey;
+ 		predicate = optimizeCb(predicate, context);
+ 		for(var i = 0; i < length; i++) {
+ 			currentKey = keys ? keys[i] : i;
+ 			if(predicate(obj[currentKey], currentKey, obj)) return true;
+ 		}
+ 		return false;
  	}
 
 
