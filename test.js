@@ -158,7 +158,6 @@
 	*/
  	_.reduceRight = _foldr = function(obj, iteratee, memo, context) {
  		if(obj == null) return [];
-
  		iteratee = optimizeCb(iteratee, context, 4);
  		var currentKey;
  		var length = obj.length;
@@ -172,6 +171,101 @@
 			memo = iteratee(memo, obj[currentKey], currentKey, obj);
 		}		
 		return memo;
+ 	}
+
+ 	/*
+		*
+		_.find测试实例 
+		console.log(_.find([1, 2, 3, 4, 5, 6], function(num){ return num % 2 == 0; }));//2
+		console.log(_.find({a: 1, b: 2, c: 3, d: 4, e: 5, f: 6}, function(num){ return num % 2 == 0; }));//2
+		* 
+	*/
+
+ 	_.find = _.detect = function(obj, predicate, context) {
+ 		var key;
+ 		if(obj.length === +obj.length) {
+ 			key = _.findIndex(obj, predicate, context);
+ 		}else {
+ 			key = _.findKey(obj, predicate, context);
+ 		}
+ 		if(key !== void 0 && key !== -1) return obj[key];
+ 	}
+
+ 	/*
+		*
+		_.filter测试实例 
+		console.log(_.filter([1, 2, 3, 4, 5, 6], function(num){ return num % 2 == 0; }));//[2, 4, 6]
+		console.log(_.filter({a: 1, b: 2, c: 3, d: 4, e: 5, f: 6}, function(num){ return num % 2 == 0; }));//[2, 4, 6]
+		* 
+	*/
+ 	_.filter = _.select = function(obj, predicate, context) {
+ 		var results = [];
+ 		if(obj == null) return results;
+ 		predicate = optimizeCb(predicate, context);
+ 		_.each(obj, function(value, index, list) {
+ 			if(predicate(value, index, list)) results.push(value);
+ 		})
+ 		return results;
+ 	}
+
+ 	_.reject = function(obj, predicate, context) {
+ 		return _.filter(obj, _.negate(optimizeCb(predicate)), context);
+ 		//执行顺序
+ 		//a: function(num) {return num % 2 == 0}
+ 		//b: function(num) {return num % 2 == 0}
+ 		//c: function() {! b.apply(this, arguments)}
+ 		//d: function(value, index, obj) {! b.apply(this, arguments)}
+ 		//d(value, index, obj)
+ 	}
+
+ 	/*
+		*
+		_.filter测试实例 
+		console.log(_.every([2, 4, 5], function(num) { return num % 2 == 0; }));//false
+		console.log(_.every([2, 4, 6], function(num) { return num % 2 == 0; }));//true
+		console.log(_.every({a: 2, b: 4, c: 5}, function(num){ return num % 2 == 0; }));//false
+		console.log(_.every({a: 2, b: 4, c: 6}, function(num){ return num % 2 == 0; }));//true
+	*/
+ 	_.every = _.all = function(obj, predicate, context) {
+ 		predicate = optimizeCb(predicate);
+ 		var keys = obj.length !== +obj.length && _.keys(obj);
+ 		var length = keys ? keys.length : obj.length;
+ 		var currentKey;
+ 		for(var i = 0; i < length; i++) {
+ 			currentKey = keys ? keys[i] : i;
+ 			if(!predicate(obj[currentKey], currentKey, obj)) {
+ 				return false;
+ 			}
+ 		}
+ 		return true;
+ 	}
+
+
+ 	_.negate = function(predicate) {
+ 		return function() {
+ 			return !predicate.apply(this, arguments);
+ 		}
+ 	}
+
+ 	_.findKey = function(obj, predicate, context) {
+ 		var keys = _.keys(obj);
+ 		var length = keys.length;
+ 		predicate = optimizeCb(predicate, context);
+ 		var currentKey;
+ 		for(var i = 0; i < length; i++) {
+ 			currentKey = keys[i];
+ 			if(predicate(obj[currentKey], currentKey, obj)) return currentKey;
+ 		}
+ 		return -1;
+ 	}
+
+ 	_.findIndex = function(array, predicate, context) {
+ 		predicate = optimizeCb(predicate, context);
+ 		var length = array != null ? array.length : 0;
+ 		for(var i = 0; i < length; i++) {
+ 			if(predicate(array[i], i, array)) return i;
+ 		}
+ 		return -1;
  	}
 
  	_.identity = function(value) {

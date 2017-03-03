@@ -15,7 +15,11 @@
 	console.log(_.map({a: 1, b: 2, c: 3}));
 	console.log(_.map([1, 2, 3], [1, 2, 3]));
 	console.log(_.map({a: 1, b: 2, c: 3}, {a: 1, b: 2, c: 3}));*/
-	console.log(_.reduceRight([1, 2, 3], function(memo, num){ return memo - num; }))//-4
+	console.log(_.every([2, 4, 5], function(num) { return num % 2 == 0; }));//[2, 4, 6]
+	console.log(_.every([2, 4, 6], function(num) { return num % 2 == 0; }));//[2, 4, 6]
+	console.log(_.every({a: 2, b: 4, c: 5}, function(num){ return num % 2 == 0; }));//[2, 4, 6]
+	console.log(_.every({a: 2, b: 4, c: 6}, function(num){ return num % 2 == 0; }));//[2, 4, 6]
+
 	</script>
 </body>
 </html>
