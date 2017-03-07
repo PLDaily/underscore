@@ -262,6 +262,76 @@
  	}
 
 
+ 	_.throttle = function(func, wait, options) {
+ 		var context, args, result;
+ 		var timeout = null;
+ 		var previous = 0;
+ 		if(!options) options = {};
+ 		var later = function() {
+ 			previous = options.leading === false ? 0 : _.now();
+ 			timeout = null;
+ 			result = func.apply(context, args);
+ 			if(!timeout) context = args = null;
+ 		};
+ 		return function() {
+ 			var now = _.now();
+ 			if(!previous && options.leading === false) previous = now;
+ 			remaining = wait - (now - previous);
+ 			//console.log(remaining);
+ 			context = this;
+ 			args = arguments;
+ 			if(remaining <= 0 || remaining > wait) {
+ 				if(timeout) {
+ 					clearTimeout(timeout);
+ 					timeout = null;
+ 				}
+ 				previous = now;
+ 				result = func.apply(context, args);
+ 				if(!timeout) context = args = null;
+ 			}else if(!timeout && options.trailing !== false) {
+ 				timeout = setTimeout(later, remaining);
+ 			}
+ 			return result;
+ 		}
+ 	}
+
+ 	//在wait的时间内重复点击以最后一次为准
+ 	//immediate表示第一次是否有效
+ 	_.debounce = function(func, wait, immediate) {
+ 		var timeout, args, context, timestamp, result;
+
+ 		var later = function() {
+ 			var last = _.now() - timestamp;
+
+ 			if(last < wait && last >= 0) {
+ 				timeout = setTimeout(later, wait - last);
+ 			}else {
+ 				timeout = null;
+ 				if(!immediate) {
+ 					result = func.apply(context, args);
+ 					if(!timeout) context = args = null;
+ 				}
+ 			}
+ 		};
+ 		return function() {
+ 			context = this;
+ 			args = arguments;
+ 			timestamp = _.now();
+ 			var callNow = immediate && !timeout;
+ 			if(!timeout) timeout = setTimeout(later, wait);
+ 			if(callNow) {
+ 				result = func.apply(context, args);
+ 				context = args = null;
+ 			}
+
+ 			return result;
+ 		}
+ 	}
+
+ 	_.now = Date.now || function() {
+ 		return new Date().getTime();
+ 	}
+
  	_.negate = function(predicate) {
  		return function() {
  			return !predicate.apply(this, arguments);
