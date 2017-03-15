@@ -262,6 +262,13 @@
  	}
 
 
+ 	_.contains = _.includes = _.include = function(obj, target, fromIndex) {
+	    if (obj == null) return false;
+	    if (obj.length !== +obj.length) obj = _.values(obj);
+	    return _.indexOf(obj, target, typeof fromIndex == 'number' && fromIndex) >= 0;
+	}
+
+
  	_.throttle = function(func, wait, options) {
  		var context, args, result;
  		var timeout = null;
@@ -327,6 +334,18 @@
  			return result;
  		}
  	}
+
+ 	_.indexOf = function(array, item, isSorted) {
+	    var i = 0, length = array && array.length;
+	    if (typeof isSorted == 'number') {
+	      i = isSorted < 0 ? Math.max(0, length + isSorted) : isSorted;
+	    } else if (isSorted && length) {
+	      i = _.sortedIndex(array, item);
+	      return array[i] === item ? i : -1;
+	    }
+	    for (; i < length; i++) if (array[i] === item) return i;
+	    return -1;
+	};
 
  	_.now = Date.now || function() {
  		return new Date().getTime();
