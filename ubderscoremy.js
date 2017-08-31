@@ -219,12 +219,15 @@
 
   // **Reduce** builds up a single result from a list of values, aka `inject`,
   // or `foldl`.
+  // reduce方法把obj中元素归结为一个单独的数值，由左边开始执行
   _.reduce = _.foldl = _.inject = createReduce(1);
 
   // The right-associative version of reduce, also known as `foldr`.
+  // reduce方法把obj中元素归结为一个单独的数值，由右边开始执行
   _.reduceRight = _.foldr = createReduce(-1);
 
   // Return the first value which passes a truth test. Aliased as `detect`.
+  // 在obj中逐项查找，返回第一个通过predicate迭代函数真值检测的元素值
   _.find = _.detect = function(obj, predicate, context) {
     var key;
     if (isArrayLike(obj)) {
@@ -237,6 +240,7 @@
 
   // Return all the elements that pass a truth test.
   // Aliased as `select`.
+  // 遍历obj中的每个值，返回包含所有通过predicate真值检测的元素值
   _.filter = _.select = function(obj, predicate, context) {
     var results = [];
     predicate = cb(predicate, context);
@@ -247,14 +251,17 @@
   };
 
   // Return all the elements for which a truth test fails.
+  // 遍历obj中的每个值，返回包含所有未通过predicate真值检测的元素值
   _.reject = function(obj, predicate, context) {
     return _.filter(obj, _.negate(cb(predicate)), context);
   };
 
   // Determine whether all of the elements match a truth test.
   // Aliased as `all`.
+  // 如果obj中的所有元素都通过predicate的真值检测就返回true
   _.every = _.all = function(obj, predicate, context) {
     predicate = cb(predicate, context);
+    // 存在keys则为对象，否则是数组
     var keys = !isArrayLike(obj) && _.keys(obj),
         length = (keys || obj).length;
     for (var index = 0; index < length; index++) {
@@ -266,6 +273,7 @@
 
   // Determine if at least one element in the object matches a truth test.
   // Aliased as `any`.
+  // 如果obj中有任何一个元素通过 predicate 的真值检测就返回true
   _.some = _.any = function(obj, predicate, context) {
     predicate = cb(predicate, context);
     var keys = !isArrayLike(obj) && _.keys(obj),
@@ -279,13 +287,17 @@
 
   // Determine if the array or object contains a given item (using `===`).
   // Aliased as `includes` and `include`.
+  // 如果obj包含指定的value则返回true
   _.contains = _.includes = _.include = function(obj, item, fromIndex, guard) {
+    // 对象
     if (!isArrayLike(obj)) obj = _.values(obj);
+    // 保证数据合法性
     if (typeof fromIndex != 'number' || guard) fromIndex = 0;
     return _.indexOf(obj, item, fromIndex) >= 0;
   };
 
   // Invoke a method (with arguments) on every item in a collection.
+  // 在list的每个元素上执行methodName方法
   _.invoke = function(obj, method) {
     var args = slice.call(arguments, 2);
     var isFunc = _.isFunction(method);
@@ -296,6 +308,7 @@
   };
 
   // Convenience version of a common use case of `map`: fetching a property.
+  // 萃取对象数组中某属性值，返回一个数组
   _.pluck = function(obj, key) {
     return _.map(obj, _.property(key));
   };
@@ -628,6 +641,7 @@
   };
 
   // Generator function to create the findIndex and findLastIndex functions
+  // 返回查询到的index
   function createPredicateIndexFinder(dir) {
     return function(array, predicate, context) {
       predicate = cb(predicate, context);
@@ -641,7 +655,9 @@
   }
 
   // Returns the first index on an array-like that passes a predicate test
+  // 正向查询，得到index
   _.findIndex = createPredicateIndexFinder(1);
+  // 反向查询，得到index
   _.findLastIndex = createPredicateIndexFinder(-1);
 
   // Use a comparator function to figure out the smallest index at which
@@ -879,6 +895,7 @@
   };
 
   // Returns a negated version of the passed-in predicate.
+  // 返回一个新的predicate函数的否定版本。
   _.negate = function(predicate) {
     return function() {
       return !predicate.apply(this, arguments);
@@ -972,6 +989,7 @@
   };
 
   // Retrieve the values of an object's properties.
+  // 获取对象的属性值，以数组的形式返回
   _.values = function(obj) {
     var keys = _.keys(obj);
     var length = keys.length;
@@ -1037,6 +1055,7 @@
   _.extendOwn = _.assign = createAssigner(_.keys);
 
   // Returns the first key on an object that passes a predicate test
+  // 查找obj对象的key，并返回
   _.findKey = function(obj, predicate, context) {
     predicate = cb(predicate, context);
     var keys = _.keys(obj), key;
