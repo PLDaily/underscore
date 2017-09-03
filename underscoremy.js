@@ -38,7 +38,7 @@
   var Ctor = function(){};
 
   // Create a safe reference to the Underscore object for use below.
-  // 保证传入的是一个underscore对象
+  // 保证传入的是_的一个实例
   var _ = function(obj) {
     if (obj instanceof _) return obj;
     if (!(this instanceof _)) return new _(obj);
@@ -144,6 +144,7 @@
   // Avoids a very nasty iOS 8 JIT bug on ARM-64. #2094
   // 最大数值为2的53次方-1
   var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
+  // 获取长度属性
   var getLength = property('length');
   // 数组或伪数组
   var isArrayLike = function(collection) {
@@ -1309,6 +1310,7 @@
   };
 
   // Is a given variable undefined?
+  // 返回undefined
   _.isUndefined = function(obj) {
     return obj === void 0;
   };

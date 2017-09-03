@@ -20,15 +20,15 @@
 	console.log(_.some({a: 1, b: 3, c: 5}, function(num){ return num % 2 == 0; }));//false
 	console.log(_.some({a: 2, b: 4, c: 6}, function(num){ return num % 2 == 0; }));//true
 */
-function updatePosition1() {
-	console.log(111);
-}
-function updatePosition2() {
-	console.log(222);
-}
-var throttled = _.throttle(updatePosition2, 500, {leading: false, trailing: false});
-//window.addEventListener('scroll', updatePosition1, false);
-window.addEventListener('scroll', throttled, false);
+// function updatePosition1() {
+// 	console.log(111);
+// }
+// function updatePosition2() {
+// 	console.log(222);
+// }
+// var throttled = _.throttle(updatePosition2, 500, {leading: false, trailing: false});
+// //window.addEventListener('scroll', updatePosition1, false);
+// window.addEventListener('scroll', throttled, false);
 	</script>
 </body>
 </html>
