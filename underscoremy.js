@@ -104,6 +104,7 @@
   };
 
   // An internal function for creating assigner functions.
+  // 循环整合arguments中的对象，undefinedOnly表示后面的对象中的属性是否覆盖之前对象是属性的属性值
   var createAssigner = function(keysFunc, undefinedOnly) {
     return function(obj) {
       var length = arguments.length;
@@ -980,6 +981,7 @@
   };
 
   // Retrieve all the property names of an object.
+  // 返回对象的所有属性名
   _.allKeys = function(obj) {
     if (!_.isObject(obj)) return [];
     var keys = [];
@@ -1049,10 +1051,12 @@
   };
 
   // Extend a given object with all the properties in passed-in object(s).
+  // 对象的整合
   _.extend = createAssigner(_.allKeys);
 
   // Assigns a given object with all the own properties in the passed-in object(s)
   // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
+  // 对象的整合
   _.extendOwn = _.assign = createAssigner(_.keys);
 
   // Returns the first key on an object that passes a predicate test
@@ -1100,6 +1104,7 @@
   };
 
   // Fill in a given object with default properties.
+  // 对象的整合，后者属性覆盖前者属性
   _.defaults = createAssigner(_.allKeys, true);
 
   // Creates an object that inherits from the given prototype object.
