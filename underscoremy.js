@@ -463,6 +463,7 @@
   };
 
   // Return the number of elements in an object.
+  // obj的长度
   _.size = function(obj) {
     if (obj == null) return 0;
     return isArrayLike(obj) ? obj.length : _.keys(obj).length;
@@ -799,6 +800,7 @@
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
+  // 延迟执行func函数
   _.delay = function(func, wait) {
     var args = slice.call(arguments, 2);
     return setTimeout(function(){
